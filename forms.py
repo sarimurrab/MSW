@@ -4,7 +4,7 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'MYKEY'
+app.config['SECRET_KEY'] = 'MYKytfyfhgfgEY'
 
 class Signup_form(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
