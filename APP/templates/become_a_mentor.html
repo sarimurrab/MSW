@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Registration for Mentor</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+            {{ message }}
+         </div>
+      {%- endfor %}
+      
+        <div class="container">
+            <div class="title">Register Yourself</div>
+            <form action = "{{ request.path }}" method = "post">
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details">Email</span>
+                        <input type="text" name="email" placeholder="Enter your email" required>   
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Name (Please use your real name)</span>
+                        <input type="text" name="name" placeholder="Enter your name" required>   
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Avatar (https public URL to an image file)</span>
+                        <input type="file" name="avatar" required>   
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Title</span>
+                        <input type="text"  name="title" required>   
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Description (Empty or 3-140 characters)</span>
+                        <input type="text"  name="description" required>   
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Country</span>
+                        <input list="country" name="country" required>
+                        <datalist id="country">
+                            <option value="India">
+                            <option value="Japan">
+                            <option value="China">
+                            <option value="England">
+                            <option value="Australia">
+                        </datalist>   
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Tags</span>
+                        <input list="tags" name="tags"  required>
+                        <datalist id="tags">
+                            <option value=".net">
+                            <option value="java">
+                            <option value="javascript">
+                            <option value="python">
+                            <option value="c++">
+                        </datalist>   
+                    </div>
+                    <div class="gender-details">
+                        <input type="radio" name="gender" id="dot-1">
+                        <input type="radio" name="gender" id="dot-2">
+                        <input type="radio" name="gender" id="dot-3">
+                        <span class="gender-title">Gender</span>
+                        <div class="category">
+                            <label for="dot-1">
+                                <span class="dot one"></span>
+                                <span class="gender">Male</span>
+                            </label>
+                            <label for="dot-2">
+                                <span class="dot two"></span>
+                                <span class="gender">Female</span>
+                            </label>
+                            <label for="dot-3">
+                                <span class="dot three"></span>
+                                <span class="gender">Other</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="button">
+                        <input type="submit" value="Register">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+
+</html>
