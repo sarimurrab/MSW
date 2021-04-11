@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=s, initial-scale=1.0">
+    <title>startUpCoach</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="topnav">
+
+        <div class="navelements">
+            <a class="navbar-brand" href="/">
+                <div class="logo-image">
+                    <img src="logo3.png" class="img-fluid">
+                </div>
+            </a>
+            <a href="#mentors">Mentors</a>
+            <a href="#blog">Blog</a>
+            <a href="#career">Career</a>
+            <a href="#about">About</a>
+            <div class="topnav-right">
+                <a href="#login">LogIn/SignUp</a>
+            </div>
+        </div>
+    </div>
+    <section id="banner">
+        <div class="banner-text">
+            <h1>startUp Coach</h1>
+            <p>“Mentoring is a brain to pick, an ear to listen, and a push in the right direction.”</p>
+            <div class="banner-btn">
+                <a href="#"><span></span> Find a Mantor</a>
+            </div>
+
+        </div>
+    </section>
+
+    <div id= "sideNav"> 
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Why Chose Us?</a></li>
+                <li><a href="#">Mission</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="menuBtn">
+        <img src="menu.png" id="menu">
+    </div>
+
+    <script>
+        var menuBtn= document.getElementById("menuBtn")
+        var sideNav= document.getElementById("sideNav")
+        var menu= document.getElementById("menu")
+
+        sideNav.style.right="-250px"
+
+        menuBtn.onclick=function(){
+            if(sideNav.style.right=="-250px"){
+                sideNav.style.right="0";
+            }
+            else{
+                sideNav.style.right="-250px";
+            }
+        }
+    </script>
+
+
+
+
+
+    <section id="about">
+        <div class="title-text">
+            <h1>Why Chose Us?</h1>
+            <p>
+                Coding Coach is a free, open-source platform which aims to connect software developers and mentors all over the world. It is built by a group of talented and passionate developers, designers, engineers, and humans who want to make the engineering world a better place to collaborate. This project was born out of a desire to provide a platform to connect mentors and mentees throughout the world at no cost. Coding Coach is created by the people, for the people.
+            </p>
+
+        </div>
+         
+    </section>
+
+
+
+</body>
+
+</html>
