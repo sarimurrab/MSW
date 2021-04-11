@@ -19,7 +19,7 @@
         <div class="navelements">
             <a class="navbar-brand" href="/">
                 <div class="logo-image">
-                    <img src="logo3.png" class="img-fluid">
+                    <img src="{{ url_for('static',filename='images/logo3.png') }}" class="img-fluid">
                 </div>
             </a>
             <a href="#mentors">Mentors</a>
@@ -27,11 +27,11 @@
             <a href="#career">Career</a>
             <a href="#about">About</a>
             <div class="topnav-right">
-                <a href="#login">LogIn/SignUp</a>
+                <a href="{{ url_for('google_login') }}">LogIn/SignUp</a>
             </div>
         </div>
     </div>
-    <section id="banner">
+    <section id="banner" style="background : linear-gradient(rgba(0,0,0,0.5),#009688), url('{{ url_for('static',filename='images/bgimg.jpg') }}'); background-size : cover; background-position : center; height : 100vh;">
         <div class="banner-text">
             <h1>startUp Coach</h1>
             <p>“Mentoring is a brain to pick, an ear to listen, and a push in the right direction.”</p>

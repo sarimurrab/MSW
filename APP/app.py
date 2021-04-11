@@ -61,7 +61,7 @@ class Coach(db.Model):
         self.linkedin = linkedin
         self.twitter = twitter
         self.shortdescription = shortdescription
-        self.user_id = Users.query.filter_by(email='zeeshaanalam11@gmail.com').first().id
+        self.user_id = Users.query.filter_by(email='arsalan1406@gmail.com').first().id
 
     def __repr__(self):
         return f"{self.position},{self.organization},{self.country}, {self.linkedin}, {self.twitter}, {self.shortdescription}"
