@@ -44,7 +44,7 @@
                 {% if current_user.is_authenticated ==False%}
                 <a href="{{ url_for('google_login') }}"><span></span> Find a Mentor</a>
                 {%else%}
-                <a href="#"><span></span> Mentors</a>
+                <a href="{{url_for('list_of_coach')}}"><span></span> Mentors</a>
                 {%endif%}
             </div>
 

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, flash, request, jsonify
+from flask import Flask, render_template, url_for, redirect, flash, request, jsonify, session
 from authlib.integrations.flask_client import OAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -69,7 +69,7 @@ class Coach(db.Model, UserMixin):
         self.linkedin = linkedin
         self.twitter = twitter
         self.shortdescription = shortdescription
-        self.user_id = Users.query.filter_by(email='arsalan1406@gmail.com').first().id
+        self.user_id = Users.query.filter_by(email=session['current_email']).first().id
 
     def __repr__(self):
         return f"{self.position},{self.organization},{self.country}, {self.linkedin}, {self.twitter}, {self.shortdescription}"
@@ -118,7 +118,8 @@ def google_authorize():
       g_user = Users(resp['email'], resp['verified_email'], resp['name'], resp['picture'], resp['locale'])
       db.session.add(g_user)
       db.session.commit()
-   user = Users.query.filter_by(email=resp['email']).first()
+   session['current_email']=resp['email']
+   user = Users.query.filter_by(email=resp['email']).first()   
    login_user(user)
    return redirect(url_for('index'))
 
@@ -126,6 +127,7 @@ def google_authorize():
 
 
 @app.route('/becomecoach', methods = ['POST','GET'])
+@login_required
 def becomecoach():
    if request.method == 'POST':
       if not request.form['position'] or not request.form['organization'] or not request.form['country'] or not request.form['linkedin'] or not request.form['shortdescription']:
@@ -139,6 +141,14 @@ def becomecoach():
          flash('Record was successfully added')
          return "redirect(url_for('show_all'))"
    return render_template('become_a_coach.html')
+
+@app.route('/list-of-coach')
+@login_required
+def list_of_coach():
+   result = db.session.query(Users,Coach).join(Coach).all()
+   a = [(1,2,3,'Sarim'),(6,7,8,'ars')]
+   print(result[0][0].name)
+   return render_template('list_of_coach.html',result = result,a=a)
 
 @app.route('/logout')
 @login_required
