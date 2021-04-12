@@ -3,6 +3,7 @@ from authlib.integrations.flask_client import OAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
+from flask_login import LoginManager, login_required, login_user, UserMixin, logout_user
 
 
 
@@ -12,7 +13,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///"+ os.path.join(base, "users.
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(user_id)
 
 oauth = OAuth(app)
 
@@ -22,7 +30,7 @@ app.config['GOOGLE_CLIENT_SECRET'] = "b8pXtFpO1-MlyT0B7MKfQcvZ"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
-class Users(db.Model):
+class Users(db.Model, UserMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(100), nullable = False)
@@ -40,9 +48,9 @@ class Users(db.Model):
         self.locale = locale
 
     def __repr__(self):
-        return f"{self.name},{self.verified_email},{self.name}, {self.picture}, {self.locale}"
+        return f"{self.email},{self.verified_email},{self.name}, {self.picture}, {self.locale}"
 
-class Coach(db.Model):
+class Coach(db.Model, UserMixin):
     __tablename__ = "coach"
     id = db.Column(db.Integer, primary_key = True)
     position = db.Column(db.String(100), nullable = False)
@@ -104,9 +112,14 @@ def google_authorize():
    google = oauth.create_client('google')
    token = google.authorize_access_token()
    resp = google.get('userinfo').json()
-   g_user = Users(resp['email'], resp['verified_email'], resp['name'], resp['picture'], resp['locale'])
-   db.session.add(g_user)
-   db.session.commit()
+   if Users.query.filter_by(email=resp['email']).first():
+      pass
+   else:
+      g_user = Users(resp['email'], resp['verified_email'], resp['name'], resp['picture'], resp['locale'])
+      db.session.add(g_user)
+      db.session.commit()
+   user = Users.query.filter_by(email=resp['email']).first()
+   login_user(user)
    return f"{Users.query.all()}"
 
 
@@ -126,6 +139,13 @@ def becomecoach():
          flash('Record was successfully added')
          return "redirect(url_for('show_all'))"
    return render_template('become_a_coach.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+   logout_user()
+   flash("You logged out!")
+   return redirect(url_for('index'))
 
 if __name__ == '__main__':
    db.create_all()
