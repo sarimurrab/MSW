@@ -147,6 +147,11 @@ def logout():
    flash("You logged out!")
    return redirect(url_for('index'))
 
+@app.route('/profile')
+@login_required
+def profile():
+   return render_template('card.html')
+
 if __name__ == '__main__':
    db.create_all()
    app.run(debug = True)

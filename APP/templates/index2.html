@@ -28,7 +28,7 @@
                 
                 {% if current_user.is_authenticated %}
                 <a href="{{url_for('becomecoach')}}">Become Coach</a>
-                <a href="#">Hi {{ current_user.name }}!&Tab;</a>
+                <a href="{{ url_for('profile') }}">Hi {{ current_user.name }}!&Tab;</a>
                 <a href="{{url_for('logout')}}">Logout</a>
                 {%else%}
                 <a href="{{ url_for('google_login') }}">LogIn/SignUp</a> 
