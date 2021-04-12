@@ -120,7 +120,7 @@ def google_authorize():
       db.session.commit()
    user = Users.query.filter_by(email=resp['email']).first()
    login_user(user)
-   return f"{Users.query.all()}"
+   return redirect(url_for('index'))
 
 
 

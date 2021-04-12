@@ -18,17 +18,16 @@
 
         <div class="navelements">
             <a class="navbar-brand" href="/">
-                <div class="logo-image">
-                    <img src="{{ url_for('static',filename='images/logo3.png') }}" class="img-fluid">
-                </div>
+                HOME
             </a>
-            <a href="#mentors">Mentors</a>
+            
             <a href="#blog">Blog</a>
             <a href="#career">Career</a>
             <a href="#about">About</a>
             <div class="topnav-right">
                 
                 {% if current_user.is_authenticated %}
+                <a href="{{url_for('becomecoach')}}">Become Coach</a>
                 <a href="#">Hi {{ current_user.name }}!&Tab;</a>
                 <a href="{{url_for('logout')}}">Logout</a>
                 {%else%}
@@ -42,7 +41,11 @@
             <h1>startUp Coach</h1>
             <p>“Mentoring is a brain to pick, an ear to listen, and a push in the right direction.”</p>
             <div class="banner-btn">
-                <a href="#"><span></span> Find a Mantor</a>
+                {% if current_user.is_authenticated ==False%}
+                <a href="{{ url_for('google_login') }}"><span></span> Find a Mentor</a>
+                {%else%}
+                <a href="#"><span></span> Mentors</a>
+                {%endif%}
             </div>
 
         </div>
