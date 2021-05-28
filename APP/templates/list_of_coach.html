@@ -1,64 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='/css/pro_card.css') }}"
+    />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/cards.css') }}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    
-</head>
-<body>
+    <title>Mentors</title>
+  </head>
 
-    
-
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-    
+  <body>
     {%for coach in result%}
+
     <div class="card">
-        <div>
-          <img src="{{coach[0].picture}}">
-      
-          <h1>{{coach[0].name}}<br>
-            <span>Student</span>
-          </h1>
-          <p>Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.</p>
-          <ul>
-            <li><a href=""><i class="fab fa-linkedin-in"></i></a></li>
-            <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
-            <li><a href=""><i class="fab fa-twitter"></i></a></li>
-            <li><a href=""><i class="fab fa-instagram"></i></a></li>
-          </ul>
-          <a class="btn" href="">Hire Me</a>
+      <div class="card-top">
+        <div class="card-top-left">{{coach[1].country}}</div>
+        <div class="card-top-mid">
+          <img src="{{coach[0].picture}}" alt="mentor-photo" />
         </div>
+        <div class="card-top-right">Rating</div>
       </div>
+
+      <div class="card-mid">
+        <h2>{{coach[0].name}}</h2>
+
+        <h4>{{coach[1].position}}</h4>
+
+        <a class="btn" href="#">Send Request</a>
+      </div>
+
+      <div id="dark">
+        <ul class="btn-list normal">
+          <li>
+            <a target="_blank" ref="url_for('https://twitter.com/')" class="btn-gradient twitter"
+              ><i class="fa fa-twitter"></i
+            ></a>
+          </li>
+          <li>
+            <a href="" class="btn-gradient linkedin"
+              ><i class="fa fa-linkedin"></i
+            ></a>
+          </li>
+          <li>
+            <a href="" class="btn-gradient github"
+              ><i class="fa fa-github"></i
+            ></a>
+          </li>
+
+          <li>
+            <a href="" class="btn-gradient gmail"
+              ><i class="fa fa-envelope"></i
+            ></a>
+          </li>
+          <li>
+            <a href="" class="btn-gradient skype"
+              ><i class="fa fa-skype"></i
+            ></a>
+          </li>
+        </ul>
+      </div>
+    </div>
     {%endfor%}
-   
-
-    
-</body>
+  </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

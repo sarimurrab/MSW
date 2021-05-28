@@ -147,7 +147,11 @@ def becomecoach():
 def list_of_coach():
    result = db.session.query(Users,Coach).join(Coach).all()
    a = [(1,2,3,'Sarim'),(6,7,8,'ars')]
-   print(result[0][0].name)
+   print(result[0][1].twitter)
+   # print(result[0][0].verified_email)
+   # print(result[0][0].name)
+   # print(result[0][0].picture)
+   # print(result[0][0].locale)
    return render_template('list_of_coach.html',result = result,a=a)
 
 @app.route('/logout')
@@ -160,7 +164,7 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-   return render_template('card.html')
+   return render_template('pro_card.html')
 
 if __name__ == '__main__':
    db.create_all()
