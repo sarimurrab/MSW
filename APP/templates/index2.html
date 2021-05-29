@@ -27,8 +27,11 @@
             <div class="topnav-right">
                 
                 {% if current_user.is_authenticated %}
-                
+                {% if allowed_to_coach%}
                 <a href="{{url_for('becomecoach')}}">Become Coach</a>
+                {%else%}
+                <a>Coach &#9812;</a>
+                {%endif%}
                 <a href="{{ url_for('profile') }}">Hi {{ current_user.name }}!&Tab;</a>
                 <a href="{{url_for('logout')}}">Logout</a>
                 {%else%}
