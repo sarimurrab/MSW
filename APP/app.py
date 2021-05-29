@@ -95,6 +95,7 @@ google = oauth.register(
 # Default route
 @app.route('/')
 def index():
+  print(session['current_email'])
   return render_template('index2.html')
 
 
@@ -139,7 +140,7 @@ def becomecoach():
          db.session.add(coach)
          db.session.commit()
          flash('Record was successfully added')
-         return "redirect(url_for('show_all'))"
+         return redirect(url_for('list_of_coach'))
    return render_template('become_a_coach.html')
 
 @app.route('/list-of-coach')
@@ -164,6 +165,7 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
+   print(session['current_email'])
    return render_template('pro_card.html')
 
 if __name__ == '__main__':
