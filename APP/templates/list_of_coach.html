@@ -34,56 +34,62 @@
   </head>
 
   <body>
-    {%for coach in result%}
+    <div class="left-region"></div>
+    <div class="right-region">
+      {%for coach in result%}
 
-    <div class="card">
-      <div class="card-top">
-        <div class="card-top-left">{{coach[1].country}}</div>
-        <div class="card-top-mid">
-          <img src="{{coach[0].picture}}" alt="mentor-photo" />
+      <div class="card">
+        <div class="card-top">
+          <div class="card-top-left">{{coach[1].country}}</div>
+          <div class="card-top-mid">
+            <img src="{{coach[0].picture}}" alt="mentor-photo" />
+          </div>
+          <div class="card-top-right">Rating</div>
         </div>
-        <div class="card-top-right">Rating</div>
+
+        <div class="card-mid">
+          <h2>{{coach[0].name}}</h2>
+
+          <h4>{{coach[1].position}}</h4>
+
+          <a class="btn" href="#">Send Request</a>
+        </div>
+
+        <div id="dark">
+          <ul class="btn-list normal">
+            <li>
+              <a
+                target="_blank"
+                ref="url_for('https://twitter.com/')"
+                class="btn-gradient twitter"
+                ><i class="fa fa-twitter"></i
+              ></a>
+            </li>
+            <li>
+              <a href="" class="btn-gradient linkedin"
+                ><i class="fa fa-linkedin"></i
+              ></a>
+            </li>
+            <li>
+              <a href="" class="btn-gradient github"
+                ><i class="fa fa-github"></i
+              ></a>
+            </li>
+
+            <li>
+              <a href="" class="btn-gradient gmail"
+                ><i class="fa fa-envelope"></i
+              ></a>
+            </li>
+            <li>
+              <a href="" class="btn-gradient skype"
+                ><i class="fa fa-skype"></i
+              ></a>
+            </li>
+          </ul>
+        </div>
       </div>
-
-      <div class="card-mid">
-        <h2>{{coach[0].name}}</h2>
-
-        <h4>{{coach[1].position}}</h4>
-
-        <a class="btn" href="#">Send Request</a>
-      </div>
-
-      <div id="dark">
-        <ul class="btn-list normal">
-          <li>
-            <a target="_blank" ref="url_for('https://twitter.com/')" class="btn-gradient twitter"
-              ><i class="fa fa-twitter"></i
-            ></a>
-          </li>
-          <li>
-            <a href="" class="btn-gradient linkedin"
-              ><i class="fa fa-linkedin"></i
-            ></a>
-          </li>
-          <li>
-            <a href="" class="btn-gradient github"
-              ><i class="fa fa-github"></i
-            ></a>
-          </li>
-
-          <li>
-            <a href="" class="btn-gradient gmail"
-              ><i class="fa fa-envelope"></i
-            ></a>
-          </li>
-          <li>
-            <a href="" class="btn-gradient skype"
-              ><i class="fa fa-skype"></i
-            ></a>
-          </li>
-        </ul>
-      </div>
+      {%endfor%}
     </div>
-    {%endfor%}
   </body>
 </html>

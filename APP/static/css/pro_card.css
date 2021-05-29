@@ -8,7 +8,7 @@
     width: 215px;
     height: 300px;
     border: 2px red solid;
-    
+    margin: 20px;
     justify-content:space-evenly;
 
 }
@@ -260,3 +260,10 @@
 }
 
 
+
+
+
+.right-region {
+	display: flex;
+	flex-flow: wrap;
+}
