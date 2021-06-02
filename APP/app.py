@@ -3,7 +3,7 @@ from authlib.integrations.flask_client import OAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
-from flask_login import LoginManager, login_required, login_user, UserMixin, logout_user
+from flask_login import LoginManager, login_required, login_user, UserMixin, logout_user, current_user
 
 
 app = Flask(__name__)
@@ -60,21 +60,25 @@ class Coach(db.Model, UserMixin):
     country = db.Column(db.String(100), nullable=False)
     linkedin = db.Column(db.String(100), nullable=False)
     twitter = db.Column(db.String(50), nullable=False)
+    github = db.Column(db.String(50), nullable=False)
+    skypeid = db.Column(db.String(50), nullable=False)
     shortdescription = db.Column(db.String(50), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    def __init__(self, position, organization, country, linkedin, twitter, shortdescription):
+    def __init__(self, position, organization, country, linkedin, twitter, github, skypeid,shortdescription):
         self.position = position
         self.organization = organization
         self.country = country
         self.linkedin = linkedin
         self.twitter = twitter
+        self.github = github
+        self.skypeid = skypeid
         self.shortdescription = shortdescription
         self.user_id = Users.query.filter_by(
             email=session['current_email']).first().id
 
     def __repr__(self):
-        return f"{self.position},{self.organization},{self.country}, {self.linkedin}, {self.twitter}, {self.shortdescription}"
+        return f"{self.position},{self.organization},{self.country}, {self.linkedin}, {self.twitter},{self.github},{self.skypeid}, {self.shortdescription}"
 
 
 google = oauth.register(
@@ -107,7 +111,8 @@ def index():
           allowed_to_coach = False
        else:
           allowed_to_coach = True
-   #  print(allowed_to_coach)
+    print(allowed_to_coach)
+    print(current_user.id)
     return render_template('index2.html',allowed_to_coach=allowed_to_coach)
 
 
@@ -146,7 +151,7 @@ def becomecoach():
             flash('Please enter all the fields', 'error')
         else:
             coach = Coach(request.form['position'], request.form['organization'], request.form['country'],
-                          request.form['linkedin'], request.form['twitter'], request.form['shortdescription'])
+                          request.form['linkedin'], request.form['twitter'],request.form['github'],request.form['skypeid'], request.form['shortdescription'])
 
             db.session.add(coach)
             db.session.commit()
