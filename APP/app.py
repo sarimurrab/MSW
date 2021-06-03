@@ -105,14 +105,14 @@ def index():
     except:
       pass
     allowed_to_coach = None
-    if tmp_mail != None:
-       id_ = Users.query.filter_by(email=tmp_mail).first().id
-       if len(Coach.query.filter_by(id=id_).all()) >= 1:
-          allowed_to_coach = False
-       else:
-          allowed_to_coach = True
-    print(allowed_to_coach)
-    print(current_user.id)
+    # if tmp_mail != None:
+    #    id_ = Users.query.filter_by(email=tmp_mail).first().id
+    #    if len(Coach.query.filter_by(id=id_).all()) >= 1:
+    #       allowed_to_coach = False
+    #    else:
+    #       allowed_to_coach = True
+    # print(allowed_to_coach)
+    # print(current_user.id)
     return render_template('index2.html',allowed_to_coach=allowed_to_coach)
 
 
