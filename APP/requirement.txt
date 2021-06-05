@@ -1,6 +1,0 @@
-Flask-SQLAlchemy
-Flask-Migrate
-Flask-Login
-bs4
-googlesearch-python
-Flask-SocketIO==3.3.2
