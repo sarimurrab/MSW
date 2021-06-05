@@ -3,4 +3,4 @@ Flask-Migrate
 Flask-Login
 bs4
 googlesearch-python
-flask_socketio
+Flask-SocketIO==3.3.2
