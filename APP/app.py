@@ -24,7 +24,7 @@ socketio = SocketIO(app,manage_session=False)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.query.get(user_id)
+    return User.query.get(user_id)
 
 
 oauth = OAuth(app)
@@ -35,9 +35,10 @@ app.config['GOOGLE_CLIENT_SECRET'] = "b8pXtFpO1-MlyT0B7MKfQcvZ"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
-class Users(db.Model, UserMixin):
-    __tablename__ = "users"
+class User(db.Model, UserMixin):
+    __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     verified_email = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(100), nullable=False)
@@ -45,7 +46,8 @@ class Users(db.Model, UserMixin):
     locale = db.Column(db.String(50), nullable=False)
     coach = db.relationship('Coach', backref='users', lazy=True)
 
-    def __init__(self, email, verified_email, name, picture, locale):
+    def __init__(self, username, email, verified_email, name, picture, locale):
+        self.username = username.split('@')[0]
         self.email = email
         self.verified_email = verified_email
         self.name = name
@@ -53,7 +55,7 @@ class Users(db.Model, UserMixin):
         self.locale = locale
 
     def __repr__(self):
-        return f"{self.email},{self.verified_email},{self.name}, {self.picture}, {self.locale}"
+        return f"{self.username},{self.email},{self.verified_email},{self.name}, {self.picture}, {self.locale}"
 
 
 
@@ -68,7 +70,7 @@ class Coach(db.Model, UserMixin):
     github = db.Column(db.String(50), nullable=False)
     skypeid = db.Column(db.String(50), nullable=False)
     shortdescription = db.Column(db.String(50), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __init__(self, position, organization, country, linkedin, twitter, github, skypeid,shortdescription):
         self.position = position
@@ -79,7 +81,7 @@ class Coach(db.Model, UserMixin):
         self.github = github
         self.skypeid = skypeid
         self.shortdescription = shortdescription
-        self.user_id = Users.query.filter_by(
+        self.user_id = User.query.filter_by(
             email=session['current_email']).first().id
 
     def __repr__(self):
@@ -111,7 +113,7 @@ def index():
       pass
     allowed_to_coach = None
     if tmp_mail != None:
-       id_ = Users.query.filter_by(email=tmp_mail).first().id
+       id_ = User.query.filter_by(email=tmp_mail).first().id
        if len(Coach.query.filter_by(id=id_).all()) >= 1:
           allowed_to_coach = False
        else:
@@ -135,16 +137,16 @@ def google_authorize():
     google = oauth.create_client('google')
     token = google.authorize_access_token()
     resp = google.get('userinfo').json()
-    if Users.query.filter_by(email=resp['email']).first():
+    if User.query.filter_by(email=resp['email']).first():
         pass
     else:
-        g_user = Users(resp['email'], resp['verified_email'],
+        g_user = User(resp['email'],resp['email'], resp['verified_email'],
                        resp['name'], resp['picture'], resp['locale'])
         
         db.session.add(g_user)
         db.session.commit()
     session['current_email'] = resp['email']
-    user = Users.query.filter_by(email=resp['email']).first()
+    user = User.query.filter_by(email=resp['email']).first()
     login_user(user)
     return redirect(url_for('index'))
 
@@ -169,7 +171,7 @@ def becomecoach():
 @app.route('/list-of-coach')
 @login_required
 def list_of_coach():
-    result = db.session.query(Users, Coach).join(Coach).all()
+    result = db.session.query(User, Coach).join(Coach).all()
     a = [(1, 2, 3, 'Sarim'), (6, 7, 8, 'ars')]
     print(result[0][1].twitter)
     # print(result[0][0].verified_email)
