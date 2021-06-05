@@ -20,9 +20,11 @@
             <a class="navbar-brand" href="/">
                 HOME
             </a>
+            {% if current_user.is_authenticated %}
             <a href="{{url_for('services')}}">Services</a>
             <a href="#blog">Blog</a>
-            <a href="#career">Career</a>
+            {%endif%}
+            <a href="#career">Careers</a>
             <a href="#about">About</a>
             <div class="topnav-right">
                 

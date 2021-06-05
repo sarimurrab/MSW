@@ -1,9 +1,12 @@
+from enum import unique
 from flask import Flask, render_template, url_for, redirect, flash, request, jsonify, session
 from authlib.integrations.flask_client import OAuth
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
 from flask_login import LoginManager, login_required, login_user, UserMixin, logout_user, current_user
+from flask_socketio import SocketIO, _ManagedSession, send, emit, join_room, leave_room
+import time
 
 
 app = Flask(__name__)
@@ -17,6 +20,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+socketio = SocketIO(app,manage_session=False)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -50,6 +54,7 @@ class Users(db.Model, UserMixin):
 
     def __repr__(self):
         return f"{self.email},{self.verified_email},{self.name}, {self.picture}, {self.locale}"
+
 
 
 class Coach(db.Model, UserMixin):
@@ -135,6 +140,7 @@ def google_authorize():
     else:
         g_user = Users(resp['email'], resp['verified_email'],
                        resp['name'], resp['picture'], resp['locale'])
+        
         db.session.add(g_user)
         db.session.commit()
     session['current_email'] = resp['email']
@@ -192,6 +198,50 @@ def profile():
 @login_required
 def services():
     return render_template('services.html')
+
+ROOMS = ["lounge", "news", "games", "coding"]
+@app.route('/chat')
+def chat():
+
+    if not current_user.is_authenticated:
+        flash('Please login', 'danger')
+        return redirect(url_for('login'))
+
+    return render_template("chat.html", username=current_user.name, rooms=ROOMS)
+
+@socketio.on('incoming-msg')
+def on_message(data):
+    """Broadcast messages"""
+
+    msg = data["msg"]
+    username = data["username"]
+    room = data["room"]
+    # Set timestamp
+    time_stamp = time.strftime('%b-%d %I:%M%p', time.localtime())
+    send({"username": username, "msg": msg, "time_stamp": time_stamp}, room=room)
+
+
+@socketio.on('join')
+def on_join(data):
+    """User joins a room"""
+
+    username = data["username"]
+    room = data["room"]
+    join_room(room)
+
+    # Broadcast that new user has joined
+    send({"msg": username + " has joined the " + room + " room."}, room=room)
+
+
+@socketio.on('leave')
+def on_leave(data):
+    """User leaves a room"""
+
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    send({"msg": username + " has left the room"}, room=room)
+
 
 if __name__ == '__main__':
     db.create_all()
