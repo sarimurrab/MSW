@@ -209,7 +209,7 @@ def chat():
         flash('Please login', 'danger')
         return redirect(url_for('login'))
 
-    return render_template("chat.html", username=current_user.name, rooms=ROOMS)
+    return render_template("chat.html", username=current_user.username, rooms=ROOMS)
 
 @socketio.on('incoming-msg')
 def on_message(data):

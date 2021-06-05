@@ -150,3 +150,6 @@ input[type=text]:focus{
 #get-username {
     display: none !important;
 }
+.navbar-nav li {
+    font-size: 1.2rem;
+}
