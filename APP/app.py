@@ -105,14 +105,14 @@ def index():
     except:
       pass
     allowed_to_coach = None
-    # if tmp_mail != None:
-    #    id_ = Users.query.filter_by(email=tmp_mail).first().id
-    #    if len(Coach.query.filter_by(id=id_).all()) >= 1:
-    #       allowed_to_coach = False
-    #    else:
-    #       allowed_to_coach = True
-    # print(allowed_to_coach)
-    # print(current_user.id)
+    if tmp_mail != None:
+       id_ = Users.query.filter_by(email=tmp_mail).first().id
+       if len(Coach.query.filter_by(id=id_).all()) >= 1:
+          allowed_to_coach = False
+       else:
+          allowed_to_coach = True
+    
+    
     return render_template('index2.html',allowed_to_coach=allowed_to_coach)
 
 
@@ -187,6 +187,11 @@ def profile():
     print(session['current_email'])
     return render_template('pro_card.html')
 
+
+@app.route('/services')
+@login_required
+def services():
+    return render_template('services.html')
 
 if __name__ == '__main__':
     db.create_all()

@@ -38,6 +38,7 @@
   </head>
 
   <body>
+    
     <div class="left-region"></div>
     <div class="right-region">
       {%for coach in result%}
@@ -53,10 +54,11 @@
 
         <div class="card-mid">
           <h2>{{coach[0].name}}</h2>
+          
 
           <h4>{{coach[1].position}}, {{coach[1].organization}}</h4>
 
-          <a class="btn" href="#">Send Request</a>
+          <a class="btn" href="https://twitter.com/sarimurrab">Send Request</a>
         </div>
 
         <div id="dark">
@@ -64,31 +66,34 @@
             <li>
               <a
                 target="_blank"
-                ref="url_for('https://twitter.com/')"
+                href="{{coach[1].twitter}}"
                 class="btn-gradient twitter"
                 ><i class="fa fa-twitter"></i
               ></a>
             </li>
             <li>
-              <a href="" class="btn-gradient linkedin"
+              <a target="_blank" href="{{coach[1].linkedin}}" class="btn-gradient linkedin"
                 ><i class="fa fa-linkedin"></i
               ></a>
             </li>
             <li>
-              <a href="" class="btn-gradient github"
+              <a target="_blank" href="{{coach[1].github}}" class="btn-gradient github"
                 ><i class="fa fa-github"></i
               ></a>
             </li>
-
+            {%set gmail_link = "https://mail.google.com/mail/u/0/?fs=1&to="+coach[0].email+"&su=REFERRING%20FROM%20START-UP%20COACH&body=Hello,%20This%20is%20"+current_user.name+"%0d%0a"+"..."+"%0d%0a"+"..."+"%0d%0a"+"..."+"%0d%0a%0d%0a%0d%0a%0d%0a"+"Thanks%20and%20Regards"+"%0d%0a"+current_user.name+"&tf=cm" %}
+            
             <li>
-              <a href="" class="btn-gradient gmail"
+              <a target="_blank" href="{{gmail_link}}" class="btn-gradient gmail"
                 ><i class="fa fa-envelope"></i
               ></a>
             </li>
+            {%set skype_chat = "skype:"+coach[1].skypeid+"?chat"%}
             <li>
-              <a href="" class="btn-gradient skype"
+              <a target="_blank" href="{{skype_chat}} class="btn-gradient skype"
                 ><i class="fa fa-skype"></i
               ></a>
+              
             </li>
           </ul>
         </div>
