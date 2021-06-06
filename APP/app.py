@@ -192,9 +192,16 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    print(session['current_email'])
-    return render_template('pro_card.html')
+    coach_object = Coach.query.filter_by(id = current_user.id).first()
+    
+    return render_template('profile_user.html',coach_object = coach_object)
 
+@app.route('/profile_edit')
+@login_required
+def profile_edit():
+    coach_object = Coach.query.filter_by(id = current_user.id).first()
+    
+    return render_template('profile_user_edit.html',coach_object = coach_object)
 
 @app.route('/services')
 @login_required
