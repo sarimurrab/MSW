@@ -208,7 +208,7 @@ def profile_edit():
 def services():
     return render_template('services.html')
 
-ROOMS = ["lounge", "news", "games", "coding"]
+ROOMS = ["Education", "news", "games", "coding"]
 @app.route('/chat')
 def chat():
 
