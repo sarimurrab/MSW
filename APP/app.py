@@ -196,10 +196,26 @@ def profile():
     
     return render_template('profile_user.html',coach_object = coach_object)
 
-@app.route('/profile_edit')
+# User(resp['email'],
+# resp['email'], resp['verified_email'],
+#                        resp['name'], resp['picture'], resp['locale'])
+
+@app.route('/profile_edit',methods = ['POST','GET'])
 @login_required
 def profile_edit():
     coach_object = Coach.query.filter_by(id = current_user.id).first()
+    if request.method == 'POST':
+        current_user.name = request.form['name']
+        coach_object.position , coach_object.organization= request.form['position'], request.form['organization']
+
+        coach_object.country , coach_object.linkedin= request.form['country'], request.form['linkedin']
+
+        coach_object.github , coach_object.twitter= request.form['github'], request.form['twitter']
+
+        coach_object.skypeid , coach_object.shortdescription= request.form['skypeid'], request.form['shortdescription']
+
+        db.session.commit()
+        return redirect(url_for('profile'))
     
     return render_template('profile_user_edit.html',coach_object = coach_object)
 

@@ -5,13 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User edit</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/profile_user_edit.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/profile_user.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
   </head>
   <body>
     <div class="container">
       <div class="main-body">
+        <nav aria-label="breadcrumb" class="main-breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{url_for('index')}}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{url_for('profile')}}">User Profile</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+          </ol>
+        </nav>
         <div class="row">
             <div class="col-md-4 mb-3">
                 <div class="card">
@@ -152,7 +159,7 @@
                     <h6 class="mb-0">Full Name</h6>
                   </div>
                   <div class="col-sm-9 text-secondary">
-                    <input type="text" class="form-control" value="{{current_user.name}}" required/>
+                    <input type="text" class="form-control" name="name" value="{{current_user.name}}" required/>
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -191,6 +198,7 @@
                       class="form-control"
                       value="{{coach_object.position}}"
                       required
+                      name = "position"
                     />
                   </div>
                 </div>
@@ -204,6 +212,7 @@
                       class="form-control"
                       value="{{coach_object.organization}}"
                       required
+                      name = "organization"
                     />
                   </div>
                 </div>
@@ -217,6 +226,7 @@
                       class="form-control"
                       value="{{coach_object.country}}"
                       required
+                      name = "country"
                     />
                   </div>
                 </div>
@@ -230,6 +240,7 @@
                       class="form-control"
                       value="{{coach_object.linkedin}}"
                       required
+                      name = "linkedin"
                     />
                   </div>
                 </div>
@@ -243,6 +254,7 @@
                       class="form-control"
                       value="{{coach_object.github}}"
                       required
+                      name = "github"
                     />
                   </div>
                 </div>
@@ -256,12 +268,14 @@
                       class="form-control"
                       value="{{coach_object.twitter}}"
                       required
+                      name = "twitter"
                     />
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-sm-3">
-                    <h6 class="mb-0">Skype</h6>
+                    <h6 class="mb-0">Skype <a href="https://www.wikihow.com/Find-Your-Skype-ID-on-Android"> &#9997;  Where?</a></h6>
+                    
                   </div>
                   <div class="col-sm-9 text-secondary">
                     <input
@@ -269,6 +283,7 @@
                       class="form-control"
                       value="{{coach_object.skypeid}}"
                       required
+                      name = "skypeid"
                     />
                   </div>
                 </div>
@@ -282,6 +297,7 @@
                       class="form-control"
                       value="{{coach_object.shortdescription}}"
                       required
+                      name = "shortdescription"
                     />
                   </div>
                 </div>
