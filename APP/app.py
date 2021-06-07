@@ -224,6 +224,19 @@ def profile_edit():
 def services():
     return render_template('services.html')
 
+@app.route('/system-recommendation', methods=['POST','GET'])
+@login_required
+def system_recommend():
+    if request.method == 'POST':
+        category = request.form['Category']
+        type = request.form['type']
+        budget = request.form['budget']
+        mode = request.form['mode']
+        location = request.form['location']
+        funding = request.form['funding']
+        otherDetails = request.form['otherDetails']
+    return render_template('sys_recommendation.html')
+
 ROOMS = ["Education", "news", "games", "coding"]
 @app.route('/chat')
 def chat():

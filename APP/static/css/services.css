@@ -296,13 +296,13 @@
   }
   
   .card__price-only {
-    font-size: 1.4rem;
+    font-size: 3rem;
     text-transform: uppercase;
   }
   
   .card__price-value {
-    font-size: 6rem;
-    font-weight: 100;
+    font-size: 4rem;
+    /* font-weight: 100; */
   }
   
   .row {
