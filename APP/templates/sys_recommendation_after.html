@@ -19,36 +19,45 @@
       crossorigin="anonymous"
     ></script>
     <style>
+
+      body{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+      }
       *{
         margin: 0;
         padding: 0;
       }
       .right-section{
         display: flex;
+        flex-direction: row;
         flex-wrap: wrap;
-        flex-direction: column;
       }
     </style>
   </head>
   <body>
-    
+    <div class="right-section" style="border: 5px green solid;"></div>
         {% for recommendation in all_recommendations%}
             {%if "http" in recommendation['link']%}
-            <div class="right-section" style="border: 5px green solid;"></div>
-                <div class="card text-white bg-dark mb-3" style="width: 20rem; border: 2px  red solid;">
-                        <div class="card-header">{{recommendation['title']}}</div>
-                            <div class="card-body">
-                                <h5 class="card-title">Descrption</h5>
-                                <p class="card-text">
-                                    {{recommendation['desc']}}
-                                </p>
-                                <a class="btn btn-success" href="{{recommendation['link']}}">Check</a> 
-                            </div>
+            
+                <div class="card text-white bg-dark mb-3" style=" border: 2px  red solid;">
+                        <div class="card-header">
+                          {{recommendation['title']}}
                         </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Descrption</h5>
+                            <p class="card-text">
+                                {{recommendation['desc']}}
+                            </p>
+                            <a class="btn btn-success" href="{{recommendation['link']}}">Check</a> 
+                        </div>
+                 </div>
                 
-              </div>
+            
             {%endif%}
         {%endfor%}
+     </div>
     
   </body>
 </html>
