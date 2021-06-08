@@ -10,6 +10,8 @@ from flask_socketio import SocketIO, _ManagedSession, send, emit, join_room, lea
 import time
 from utils.fetch import search
 import random
+from sqlalchemy.dialects.sqlite import JSON
+
 
 
 app = Flask(__name__)
@@ -91,6 +93,16 @@ class Coach(db.Model, UserMixin):
         return f"{self.position},{self.organization},{self.country}, {self.linkedin}, {self.twitter},{self.github},{self.skypeid}, {self.shortdescription}"
 
 
+class Requests(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    requests = db.Column(JSON)
+
+    def __init__(self, id, requests):
+        self.id = id
+        self.requests = requests
+    def __repr__(self):
+        return f"{self.id},{self.requests}"
+
 google = oauth.register(
     name='google',
     client_id=app.config["GOOGLE_CLIENT_ID"],
@@ -109,18 +121,26 @@ google = oauth.register(
 # Default route
 @app.route('/')
 def index():
-    tmp_mail = None
-    try:
-      tmp_mail = session['current_email']
-    except:
-      pass
+    # tmp_mail = None
+    # try:
+    #   tmp_mail = session['current_email']
+    # except:
+    #   pass
     allowed_to_coach = None
-    if tmp_mail != None:
-       id_ = User.query.filter_by(email=tmp_mail).first().id
-       if len(Coach.query.filter_by(id=id_).all()) >= 1:
-          allowed_to_coach = False
-       else:
-          allowed_to_coach = True
+    # if tmp_mail != None:
+    #    id_ = User.query.filter_by(email=tmp_mail).first().id
+    #    if len(Coach.query.filter_by(id=id_).all()) >= 1:
+    #       allowed_to_coach = False
+    #    else:
+    #       allowed_to_coach = True
+    try:
+        coach = Coach.query.filter_by(id=current_user.id).first()
+    except:
+        coach = None
+    if coach:
+        allowed_to_coach = False
+    else:
+        allowed_to_coach = True
     
     
     return render_template('index2.html',allowed_to_coach=allowed_to_coach)
