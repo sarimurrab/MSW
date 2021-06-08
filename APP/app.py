@@ -1,12 +1,15 @@
 from enum import unique
 from flask import Flask, render_template, url_for, redirect, flash, request, jsonify, session
 from authlib.integrations.flask_client import OAuth
+from flask.templating import render_template_string
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
 from flask_login import LoginManager, login_required, login_user, UserMixin, logout_user, current_user
 from flask_socketio import SocketIO, _ManagedSession, send, emit, join_room, leave_room
 import time
+from utils.fetch import search
+import random
 
 
 app = Flask(__name__)
@@ -228,14 +231,40 @@ def services():
 @login_required
 def system_recommend():
     if request.method == 'POST':
-        category = request.form['Category']
-        type = request.form['type']
-        budget = request.form['budget']
-        mode = request.form['mode']
-        location = request.form['location']
-        funding = request.form['funding']
-        otherDetails = request.form['otherDetails']
+        session["category"] = request.form['Category']
+        session["type"] = request.form['type']
+        session["budget"] = request.form['budget']
+        session["mode"] = request.form['mode']
+        session["location"] = request.form['location']
+        session["funding"] = request.form['funding']
+        session["otherDetails"] = request.form['otherDetails']
+        return redirect(url_for('system_recommend_after'))
+
     return render_template('sys_recommendation.html')
+
+@app.route('/system-recommendation-result')
+@login_required
+def system_recommend_after():
+    list_of_bgs = ["card text-white bg-primary mb-3","card text-white bg-secondary mb-3","card text-white bg-success mb-3","card text-white bg-danger mb-3","card text-white bg-warning mb-3","card text-white bg-info mb-3","card bg-light mb-3","card text-white bg-dark mb-3"]
+    ques1 = "Who can help for startup in "+session['category']
+    ques2 = "List of Government Schemes To Support " +session["category"]+" "+"Startups In "+session["location"]
+    ques3 = "My "+session['category']+ " "+session['type']+" "+"startup schemes"
+    ques4 = "Venture funding for "+session['category']+" startups in "+session['location']+" upto "+session['funding']
+    ques5 = "Seed funding for "+session['category']+" startups in "+session['location']+" upto "+session['funding']
+    ques6 = "Platoform provide funding for "+session['category']+" startups in "+session['location']+" upto "+session['funding']
+    ques7 = "Startup "+session['otherDetails']+" Details help"
+
+    list_of_ques = [ques1,ques2,ques3,ques4,ques5,ques6,ques7]
+    num_results_choices = [4,5,6,7,8,9]
+    
+    all_recommendations = []
+    for ques in list_of_ques:
+        num_results = random.choice(num_results_choices)
+        for i in search(ques,num_results=num_results):
+            all_recommendations.append(i)
+
+    
+    return render_template('sys_recommendation_after.html',all_recommendations=all_recommendations)
 
 ROOMS = ["Education", "news", "games", "coding"]
 @app.route('/chat')

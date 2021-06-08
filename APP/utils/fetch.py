@@ -1,14 +1,7 @@
-# from googlesearch import search
-
-# q = "chaudhary sarimurrab github "
-
-# for i in search(q):
-#     print(i)
-
-
-
 from requests import get
 from bs4 import BeautifulSoup
+import random
+ 
 
 
 def search(term, num_results=10, lang="en"):
@@ -33,12 +26,18 @@ def search(term, num_results=10, lang="en"):
         for result in result_block:
             
             link = result.find('a', href=True)
-            title = result.find('h3').text
+            try:
+                title = result.find('h3').text
+            except:
+                title = "TITLE NOT FOUND"
             description = result.find('div').text.split('›')[-1]
-            link_title = result.find('span').text
+            try:
+                link_title = result.find('span').text
+            except: "LINK TITLE NOT FOUND"
             # print(title)
-            if link and title:
-                yield {"link": link['href'],"title":title,"desc":description,"link_title":link_title}
+            # if link and title:
+            #     
+            yield {"link": link['href'],"title":title,"desc":description,"link_title":link_title}
 
             
 
@@ -46,7 +45,13 @@ def search(term, num_results=10, lang="en"):
     
     return list(parse_results(html))
 
-q = "chaudhary sarimurrab github "
+# q = "chaudhary sarimurrab github "
 
-for i in search(q):
-    print(i['link_title'])
+
+# list1 = [4,5,6,7,8,9]
+# num_results = random.choice(list1)
+# for i in search(q,num_results=num_results):
+#     print(i)
+
+
+# print(search(q,num_results=num_results))
