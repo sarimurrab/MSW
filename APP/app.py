@@ -251,7 +251,7 @@ def system_recommend_after():
     ques3 = "My "+session['category']+ " "+session['type']+" "+"startup schemes"
     ques4 = "Venture funding for "+session['category']+" startups in "+session['location']+" upto "+session['funding']
     ques5 = "Seed funding for "+session['category']+" startups in "+session['location']+" upto "+session['funding']
-    ques6 = "Platoform provide funding for "+session['category']+" startups in "+session['location']+" upto "+session['funding']
+    ques6 = "Platform provide funding for "+session['category']+" startups in "+session['location']+" upto "+session['funding']
     ques7 = "Startup "+session['otherDetails']+" Details help"
 
     list_of_ques = [ques1,ques2,ques3,ques4,ques5,ques6,ques7]

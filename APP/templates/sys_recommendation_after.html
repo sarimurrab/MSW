@@ -20,42 +20,58 @@
     ></script>
     <style>
 
-      body{
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-      }
-      *{
-        margin: 0;
-        padding: 0;
-      }
-      .right-section{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-      }
+      /* The navigation bar */
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  z-index: 9999;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Links inside the navbar */
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change background on mouse-over */
+.navbar a:hover {
+  background: #ddd;
+  color: black;
+}
     </style>
   </head>
   <body>
-    <div class="right-section" style="border: 5px green solid;"></div>
+    <div class="navbar">
+      <a href="{{url_for('index')}}">Home</a>
+      <a href="{{url_for('services')}}">Services</a>
+      <a href="{{url_for('system_recommend')}}">System Recommendation</a>
+    </div>
+    <div class="right-section" style="display: flex;flex-wrap: wrap;justify-content: space-evenly;margin-top: 5%;">
         {% for recommendation in all_recommendations%}
             {%if "http" in recommendation['link']%}
             
-                <div class="card text-white bg-dark mb-3" style=" border: 2px  red solid;">
-                        <div class="card-header">
-                          {{recommendation['title']}}
+                <div class="card text-white bg-dark mb-3" style="border-radius: 7%; width: 22rem; border: 2px  red solid;display: flex;justify-content: space-between;margin:0.2; ">
+                        <div class="card-header" style="height: 5rem;font-size: 1.1rem;">
+                          <strong>{{recommendation['title'] | upper}}</strong>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Descrption</h5>
-                            <p class="card-text">
+                        <div class="card-body" style="flex-basis: 5;display: flex;flex-direction: column;">
+                            <h5 class="card-title" style="font-size: 1rem;">Description:</h5>
+                            <p class="card-text" style="height: 13rem;font-size: 0.85rem;">
                                 {{recommendation['desc']}}
                             </p>
-                            <a class="btn btn-success" href="{{recommendation['link']}}">Check</a> 
+                            <a target="_blank" class="btn btn-success" href="{{recommendation['link']}}" style="border: 20px; justify-content: flex-end;">Check</a> 
                         </div>
                  </div>
-                
-            
-            {%endif%}
+          {%endif%}
         {%endfor%}
      </div>
     
