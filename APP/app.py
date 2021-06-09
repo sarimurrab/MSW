@@ -1,5 +1,5 @@
 from enum import unique
-from flask import Flask, render_template, url_for, redirect, flash, request, jsonify, session
+from flask import Flask, json, render_template, url_for, redirect, flash, request, jsonify, session
 from authlib.integrations.flask_client import OAuth
 from flask.templating import render_template_string
 from flask_sqlalchemy import SQLAlchemy
@@ -11,6 +11,8 @@ import time
 from utils.fetch import search
 import random
 from sqlalchemy.dialects.sqlite import JSON
+from sqlalchemy.ext.mutable import MutableDict
+from sqlalchemy.ext.mutable import Mutable
 
 
 
@@ -38,6 +40,13 @@ app.config['SECRET_KEY'] = "THIS SHOULD BE SECRET"
 app.config['GOOGLE_CLIENT_ID'] = "1001855844799-rm6ju60atrloq6vb4bm62ud35v743f8o.apps.googleusercontent.com"
 app.config['GOOGLE_CLIENT_SECRET'] = "b8pXtFpO1-MlyT0B7MKfQcvZ"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+##########################################
+############### UTILS ####################
+##########################################
+
+
 
 
 class User(db.Model, UserMixin):
@@ -95,7 +104,7 @@ class Coach(db.Model, UserMixin):
 
 class Requests(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    requests = db.Column(JSON)
+    requests = db.Column(MutableDict.as_mutable(JSON))
 
     def __init__(self, requests):
         self.requests = requests
@@ -170,7 +179,7 @@ def google_authorize():
         db.session.commit()
 
         #Intialize with Zero value
-        start_json = {resp['email'].split('@')[0]: 0} 
+        start_json = {resp['email'].split('@')[0]: {}} 
         requests_per_user = Requests(requests=start_json)
         db.session.add(requests_per_user)
         db.session.commit()
@@ -207,7 +216,7 @@ def becomecoach():
 def list_of_coach():
     result = db.session.query(User, Coach).join(Coach).all()
     a = [(1, 2, 3, 'Sarim'), (6, 7, 8, 'ars')]
-    print(result[0][1].twitter)
+    # print(result[0][1].twitter)
     # print(result[0][0].verified_email)
     # print(result[0][0].name)
     # print(result[0][0].picture)
@@ -301,7 +310,24 @@ def system_recommend_after():
 @app.route('/send-request/<rcvd_username>')
 @login_required
 def send_request(rcvd_username):
-    print(rcvd_username)
+    mentee_username = current_user.username
+    mentor_username = rcvd_username
+    mentor_id = User.query.filter_by(username = mentor_username).first().id
+    obj_mentor_requests = Requests.query.filter_by(id = mentor_id).first()
+
+    mentor_python_dict = dict(obj_mentor_requests.requests)
+    print(obj_mentor_requests)
+    mentor_python_dict[mentor_username][mentee_username] = "req_came"
+    # print(mentor_python_dict)
+    # print(obj_mentor_requests.requests[mentor_username])
+    obj_mentor_requests.requests =mentor_python_dict
+    # print(obj_mentor_requests.requests[mentor_username])
+    print(obj_mentor_requests)
+    db.session.add(obj_mentor_requests)
+    db.session.commit()
+    print(Requests.query.filter_by(id = mentor_id).first())
+    # obj_mentor_requests.requests =  mentor_python_dict
+    # db.session.commit()
     return {"SENDER": current_user.username, "TO":rcvd_username}
 
 ROOMS = ["Education", "news", "games", "coding"]
