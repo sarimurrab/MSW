@@ -297,6 +297,13 @@ def system_recommend_after():
     
     return render_template('sys_recommendation_after.html',all_recommendations=all_recommendations)
 
+
+@app.route('/send-request/<rcvd_username>')
+@login_required
+def send_request(rcvd_username):
+    print(rcvd_username)
+    return {"SENDER": current_user.username, "TO":rcvd_username}
+
 ROOMS = ["Education", "news", "games", "coding"]
 @app.route('/chat')
 def chat():
