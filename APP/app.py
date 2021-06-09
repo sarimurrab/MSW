@@ -60,7 +60,7 @@ class User(db.Model, UserMixin):
         self.locale = locale
 
     def __repr__(self):
-        return f"{self.username},{self.email},{self.verified_email},{self.name}, {self.picture}, {self.locale}"
+        return f"{self.id},{self.username},{self.email},{self.verified_email},{self.name}, {self.picture}, {self.locale}"
 
 
 
@@ -90,15 +90,14 @@ class Coach(db.Model, UserMixin):
             email=session['current_email']).first().id
 
     def __repr__(self):
-        return f"{self.position},{self.organization},{self.country}, {self.linkedin}, {self.twitter},{self.github},{self.skypeid}, {self.shortdescription}"
+        return f"{self.id},{self.position},{self.organization},{self.country}, {self.linkedin}, {self.twitter},{self.github},{self.skypeid}, {self.shortdescription}"
 
 
 class Requests(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     requests = db.Column(JSON)
 
-    def __init__(self, id, requests):
-        self.id = id
+    def __init__(self, requests):
         self.requests = requests
     def __repr__(self):
         return f"{self.id},{self.requests}"
@@ -163,14 +162,26 @@ def google_authorize():
     if User.query.filter_by(email=resp['email']).first():
         pass
     else:
+        print('Here')
         g_user = User(resp['email'],resp['email'], resp['verified_email'],
                        resp['name'], resp['picture'], resp['locale'])
         
         db.session.add(g_user)
         db.session.commit()
+
+        #Intialize with Zero value
+        start_json = {resp['email'].split('@')[0]: 0} 
+        requests_per_user = Requests(requests=start_json)
+        db.session.add(requests_per_user)
+        db.session.commit()
+
+        
+        
     session['current_email'] = resp['email']
     user = User.query.filter_by(email=resp['email']).first()
+    
     login_user(user)
+    
     return redirect(url_for('index'))
 
 
