@@ -330,6 +330,7 @@ def send_request(rcvd_username):
     print(Requests.query.filter_by(id = mentor_id).first())
     # obj_mentor_requests.requests =  mentor_python_dict
     # db.session.commit()
+    print(Requests.query.all())
     return {"SENDER": current_user.username, "TO":rcvd_username}
 
 ROOMS = ["Education", "news", "games", "coding"]
