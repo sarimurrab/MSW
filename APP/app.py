@@ -20,7 +20,7 @@ from sqlalchemy_json import mutable_json_type
 
 app = Flask(__name__)
 base = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://qotfzdgpusuzfw:d35aa65768846d4a8f72cd3917944c1f3750f1432beb4ed1c90629c3c953e8b6@ec2-54-90-211-192.compute-1.amazonaws.com:5432/daqtfv0vsckmju"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://djlxcnduwrwmfa:425706efc7122753c64944086c16d981e9230a1687edd9dbf3899950a4371a04@ec2-23-23-164-251.compute-1.amazonaws.com:5432/d91fikrbh1bka4"
 # "sqlite:///" + \
 #     os.path.join(base, "users.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -108,11 +108,13 @@ class Coach(db.Model, UserMixin):
 class Requests(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     requests = db.Column(mutable_json_type(dbtype=JSONB, nested=True))
+    mentors_accepted_me = db.Column(mutable_json_type(dbtype=JSONB, nested=True))
 
-    def __init__(self, requests):
+    def __init__(self, requests,mentors_accepted_me):
         self.requests = requests
+        self.mentors_accepted_me = mentors_accepted_me
     def __repr__(self):
-        return f"{self.id},{self.requests}"
+        return f"{self.id},{self.requests},{self.mentors_accepted_me}"
 
 google = oauth.register(
     name='google',
@@ -191,7 +193,8 @@ def google_authorize():
 
         #Intialize with Zero value
         start_json = {resp['email'].split('@')[0]: {}} 
-        requests_per_user = Requests(requests=start_json)
+        start_json_list = {resp['email'].split('@')[0]: []} 
+        requests_per_user = Requests(requests=start_json,mentors_accepted_me=start_json_list)
         db.session.add(requests_per_user)
         db.session.commit()
 
@@ -358,13 +361,39 @@ def notifications():
 @app.route('/reqserve_accept/<mentees_username>')
 @login_required
 def reqserve_accept(mentees_username):
-    return mentees_username
+    mentees_id = User.query.filter_by(username = mentees_username).first().id
+    obj_for_mentees = Requests.query.get(mentees_id)
+    mentees_python_dict = dict(obj_for_mentees.mentors_accepted_me)
+    mentees_python_dict[mentees_username].append(current_user.username)
+
+    obj_for_mentees.mentors_accepted_me = mentees_python_dict
+    db.session.add(obj_for_mentees)
+    db.session.commit()
+
+    mentors_object = Requests.query.get(current_user.id)
+    mentors_python_dict = dict(mentors_object.requests)
+    mentors_python_dict[current_user.username][mentees_username] = 'req_accepted'
+    mentors_object.requests = mentors_python_dict
+    db.session.add(mentors_object)
+    db.session.commit()
+
+
+    return redirect(url_for('index'))
 
 
 @app.route('/reqserve_reject/<mentees_username>')
 @login_required
 def reqserve_reject(mentees_username):
-    return mentees_username
+    mentors_object = Requests.query.get(current_user.id)
+    mentors_python_dict = dict(mentors_object.requests)
+    mentors_python_dict[current_user.username][mentees_username] = 'req_rejected'
+    mentors_object.requests = mentors_python_dict
+    db.session.add(mentors_object)
+    db.session.commit()
+
+
+    return redirect(url_for('index'))
+    
 
 
 ROOMS = ["Education", "news", "games", "coding"]
