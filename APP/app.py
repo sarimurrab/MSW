@@ -10,16 +10,18 @@ from flask_socketio import SocketIO, _ManagedSession, send, emit, join_room, lea
 import time
 from utils.fetch import search
 import random
-from sqlalchemy.dialects.sqlite import JSON
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.ext.mutable import Mutable
+from sqlalchemy_json import mutable_json_type
 
 
 
 app = Flask(__name__)
 base = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + \
-    os.path.join(base, "users.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://qotfzdgpusuzfw:d35aa65768846d4a8f72cd3917944c1f3750f1432beb4ed1c90629c3c953e8b6@ec2-54-90-211-192.compute-1.amazonaws.com:5432/daqtfv0vsckmju"
+# "sqlite:///" + \
+#     os.path.join(base, "users.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -104,7 +106,7 @@ class Coach(db.Model, UserMixin):
 
 class Requests(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    requests = db.Column(MutableDict.as_mutable(JSON))
+    requests = db.Column(mutable_json_type(dbtype=JSONB, nested=True))
 
     def __init__(self, requests):
         self.requests = requests
