@@ -152,9 +152,17 @@ def index():
         allowed_to_coach = False
     else:
         allowed_to_coach = True
+    num_of_notifications = 0
+    if current_user.is_active:
+        mentor_username,mentor_id = current_user.username, current_user.id
+        list_of_requests = Requests.query.filter_by(id=mentor_id).first().requests[mentor_username]
+        for i in list_of_requests:
+            if list_of_requests[i]=='req_came':
+                num_of_notifications+=1
+            
     
     
-    return render_template('index2.html',allowed_to_coach=allowed_to_coach)
+    return render_template('index2.html',allowed_to_coach=allowed_to_coach,num_of_notifications=num_of_notifications)
 
 
 # Google login route
@@ -346,6 +354,18 @@ def notifications():
     list_of_requests = Requests.query.filter_by(id=mentor_id).first().requests[mentor_username]
     
     return render_template('req_notifications.html', list_of_requests = list_of_requests)
+
+@app.route('/reqserve_accept/<mentees_username>')
+@login_required
+def reqserve_accept(mentees_username):
+    return mentees_username
+
+
+@app.route('/reqserve_reject/<mentees_username>')
+@login_required
+def reqserve_reject(mentees_username):
+    return mentees_username
+
 
 ROOMS = ["Education", "news", "games", "coding"]
 @app.route('/chat')

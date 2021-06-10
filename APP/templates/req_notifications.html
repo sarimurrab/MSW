@@ -80,8 +80,8 @@
                     <content><mentee style="background-color:rgb(138, 153, 116);border-radius: 5px;padding: 3px;">{{req}}</mentee> requested to connect with you </content>
                 </td>
                 <td style="width: 30%;" class="buttons">
-                    <a class="button accept" href="#">Accept</a>
-                    <a class="button decline" href="#">Decline   </a>
+                    <a class="button accept" href="{{url_for('reqserve_accept', mentees_username=req)}}">Accept</a>
+                    <a class="button decline" href="{{url_for('reqserve_reject', mentees_username=req)}}">Decline</a>
                 </td>
             </tr>
             {%endif%}

@@ -30,7 +30,11 @@
                 
                 {% if current_user.is_authenticated %}
                 <a href="{{url_for('notifications')}}" class="notification">
-                    <span>&#x1F514;</span>
+                    <span>&#x1F514;
+                        {%if num_of_notifications>0%}
+                        <notificaion style="color: red;">{{num_of_notifications}}</notificaion>
+                        {%endif%}
+                    </span>
                     <!-- <span class="badge">3</span> -->
                   </a>
                 {% if allowed_to_coach%}
