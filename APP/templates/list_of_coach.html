@@ -64,6 +64,7 @@
 
         
         <div id="dark">
+          {%if coach[0].username in mentor_alwd_mente_lst%}
           <ul class="btn-list normal">
             <li>
               <a
@@ -98,6 +99,7 @@
               
             </li>
           </ul>
+          {%endif%}
         </div>
       </div>
       {%endfor%}

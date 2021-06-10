@@ -229,13 +229,9 @@ def becomecoach():
 @login_required
 def list_of_coach():
     result = db.session.query(User, Coach).join(Coach).all()
-    a = [(1, 2, 3, 'Sarim'), (6, 7, 8, 'ars')]
-    # print(result[0][1].twitter)
-    # print(result[0][0].verified_email)
-    # print(result[0][0].name)
-    # print(result[0][0].picture)
-    # print(result[0][0].locale)
-    return render_template('list_of_coach.html', result=result, a=a)
+    mentor_alwd_mente_lst = Requests.query.get(current_user.id).mentors_accepted_me[current_user.username]
+
+    return render_template('list_of_coach.html', result=result,mentor_alwd_mente_lst=mentor_alwd_mente_lst)
 
 
 @app.route('/logout')
