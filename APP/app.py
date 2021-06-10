@@ -1,7 +1,8 @@
 from enum import unique
-from flask import Flask, render_template, url_for, redirect, flash, request, jsonify, session
+from flask import Flask, json, render_template, url_for, redirect, flash, request, jsonify, session
 from authlib.integrations.flask_client import OAuth
 from flask.templating import render_template_string
+from flask_login.utils import login_fresh
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
@@ -10,14 +11,18 @@ from flask_socketio import SocketIO, _ManagedSession, send, emit, join_room, lea
 import time
 from utils.fetch import search
 import random
-from sqlalchemy.dialects.sqlite import JSON
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.ext.mutable import MutableDict
+from sqlalchemy.ext.mutable import Mutable
+from sqlalchemy_json import mutable_json_type
 
 
 
 app = Flask(__name__)
 base = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + \
-    os.path.join(base, "users.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://qotfzdgpusuzfw:d35aa65768846d4a8f72cd3917944c1f3750f1432beb4ed1c90629c3c953e8b6@ec2-54-90-211-192.compute-1.amazonaws.com:5432/daqtfv0vsckmju"
+# "sqlite:///" + \
+#     os.path.join(base, "users.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -40,6 +45,13 @@ app.config['GOOGLE_CLIENT_SECRET'] = "b8pXtFpO1-MlyT0B7MKfQcvZ"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
+##########################################
+############### UTILS ####################
+##########################################
+
+
+
+
 class User(db.Model, UserMixin):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
@@ -60,7 +72,7 @@ class User(db.Model, UserMixin):
         self.locale = locale
 
     def __repr__(self):
-        return f"{self.username},{self.email},{self.verified_email},{self.name}, {self.picture}, {self.locale}"
+        return f"{self.id},{self.username},{self.email},{self.verified_email},{self.name}, {self.picture}, {self.locale}"
 
 
 
@@ -90,15 +102,14 @@ class Coach(db.Model, UserMixin):
             email=session['current_email']).first().id
 
     def __repr__(self):
-        return f"{self.position},{self.organization},{self.country}, {self.linkedin}, {self.twitter},{self.github},{self.skypeid}, {self.shortdescription}"
+        return f"{self.id},{self.position},{self.organization},{self.country}, {self.linkedin}, {self.twitter},{self.github},{self.skypeid}, {self.shortdescription}"
 
 
 class Requests(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    requests = db.Column(JSON)
+    requests = db.Column(mutable_json_type(dbtype=JSONB, nested=True))
 
-    def __init__(self, id, requests):
-        self.id = id
+    def __init__(self, requests):
         self.requests = requests
     def __repr__(self):
         return f"{self.id},{self.requests}"
@@ -163,14 +174,26 @@ def google_authorize():
     if User.query.filter_by(email=resp['email']).first():
         pass
     else:
+        print('Here')
         g_user = User(resp['email'],resp['email'], resp['verified_email'],
                        resp['name'], resp['picture'], resp['locale'])
         
         db.session.add(g_user)
         db.session.commit()
+
+        #Intialize with Zero value
+        start_json = {resp['email'].split('@')[0]: {}} 
+        requests_per_user = Requests(requests=start_json)
+        db.session.add(requests_per_user)
+        db.session.commit()
+
+        
+        
     session['current_email'] = resp['email']
     user = User.query.filter_by(email=resp['email']).first()
+    
     login_user(user)
+    
     return redirect(url_for('index'))
 
 
@@ -196,7 +219,7 @@ def becomecoach():
 def list_of_coach():
     result = db.session.query(User, Coach).join(Coach).all()
     a = [(1, 2, 3, 'Sarim'), (6, 7, 8, 'ars')]
-    print(result[0][1].twitter)
+    # print(result[0][1].twitter)
     # print(result[0][0].verified_email)
     # print(result[0][0].name)
     # print(result[0][0].picture)
@@ -289,6 +312,40 @@ def system_recommend_after():
 
     
     return render_template('sys_recommendation_after.html',all_recommendations=all_recommendations)
+
+
+@app.route('/send-request/<rcvd_username>')
+@login_required
+def send_request(rcvd_username):
+    mentee_username = current_user.username
+    mentor_username = rcvd_username
+    mentor_id = User.query.filter_by(username = mentor_username).first().id
+    obj_mentor_requests = Requests.query.filter_by(id = mentor_id).first()
+
+    mentor_python_dict = dict(obj_mentor_requests.requests)
+    print(obj_mentor_requests)
+    mentor_python_dict[mentor_username][mentee_username] = "req_came"
+    # print(mentor_python_dict)
+    # print(obj_mentor_requests.requests[mentor_username])
+    obj_mentor_requests.requests =mentor_python_dict
+    # print(obj_mentor_requests.requests[mentor_username])
+    print(obj_mentor_requests)
+    db.session.add(obj_mentor_requests)
+    db.session.commit()
+    print(Requests.query.filter_by(id = mentor_id).first())
+    # obj_mentor_requests.requests =  mentor_python_dict
+    # db.session.commit()
+    print(Requests.query.all())
+    return {"SENDER": current_user.username, "TO":rcvd_username}
+
+
+@app.route('/notifications')
+@login_required
+def notifications():
+    mentor_username,mentor_id = current_user.username, current_user.id
+    list_of_requests = Requests.query.filter_by(id=mentor_id).first().requests[mentor_username]
+    
+    return render_template('req_notifications.html', list_of_requests = list_of_requests)
 
 ROOMS = ["Education", "news", "games", "coding"]
 @app.route('/chat')

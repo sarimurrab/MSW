@@ -58,7 +58,7 @@
 
           <h4>{{coach[1].position}}, {{coach[1].organization}}</h4>
 
-          <a class="btn" href="https://twitter.com/sarimurrab">Send Request</a>
+          <a class="btn" target="_blank" href="{{url_for('send_request',rcvd_username = coach[0].username)}}">Send Request</a>
         </div>
 
         <div id="dark">
