@@ -72,15 +72,20 @@
   <body style="background-color: rgb(212, 203, 203);">
 
         <table class="group">
+            {%for req in list_of_requests%}
+
+            {%if list_of_requests[req]== "req_came"%}
             <tr class="list ">
                 <td style="width: 70%;" class="title">
-                    <content>First item</content>
+                    <content><mentee style="background-color:rgb(138, 153, 116);border-radius: 5px;padding: 3px;">{{req}}</mentee> requested to connect with you </content>
                 </td>
                 <td style="width: 30%;" class="buttons">
                     <a class="button accept" href="#">Accept</a>
                     <a class="button decline" href="#">Decline   </a>
                 </td>
             </tr>
+            {%endif%}
+            {%endfor%}
 
         </table>
 

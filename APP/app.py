@@ -2,6 +2,7 @@ from enum import unique
 from flask import Flask, json, render_template, url_for, redirect, flash, request, jsonify, session
 from authlib.integrations.flask_client import OAuth
 from flask.templating import render_template_string
+from flask_login.utils import login_fresh
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
@@ -332,6 +333,15 @@ def send_request(rcvd_username):
     # db.session.commit()
     print(Requests.query.all())
     return {"SENDER": current_user.username, "TO":rcvd_username}
+
+
+@app.route('/notifications')
+@login_required
+def notifications():
+    mentor_username,mentor_id = current_user.username, current_user.id
+    list_of_requests = Requests.query.filter_by(id=mentor_id).first().requests[mentor_username]
+    
+    return render_template('req_notifications.html', list_of_requests = list_of_requests)
 
 ROOMS = ["Education", "news", "games", "coding"]
 @app.route('/chat')
