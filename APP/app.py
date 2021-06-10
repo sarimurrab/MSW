@@ -252,6 +252,8 @@ def services():
 def system_recommend():
     if request.method == 'POST':
         session["category"] = request.form['Category']
+        session["industry"] = request.form['IndustryCategory']
+        session['topic'] = request.form['topic']
         session["type"] = request.form['type']
         session["budget"] = request.form['budget']
         session["mode"] = request.form['mode']
@@ -266,15 +268,17 @@ def system_recommend():
 @login_required
 def system_recommend_after():
     list_of_bgs = ["card text-white bg-primary mb-3","card text-white bg-secondary mb-3","card text-white bg-success mb-3","card text-white bg-danger mb-3","card text-white bg-warning mb-3","card text-white bg-info mb-3","card bg-light mb-3","card text-white bg-dark mb-3"]
-    ques1 = "Who can help for startup in "+session['category']
-    ques2 = "List of Government Schemes To Support " +session["category"]+" "+"Startups In "+session["location"]
-    ques3 = "My "+session['category']+ " "+session['type']+" "+"startup schemes"
-    ques4 = "Venture funding for "+session['category']+" startups in "+session['location']+" upto "+session['funding']
-    ques5 = "Seed funding for "+session['category']+" startups in "+session['location']+" upto "+session['funding']
-    ques6 = "Platform provide funding for "+session['category']+" startups in "+session['location']+" upto "+session['funding']
+    ques1 = "Who can help for startup in "+session['industry']
+    ques2 = "List of Government Schemes To Support " +session["industry"]+" "+"Startups In "+session["location"]
+    ques3 = session['type']+" private startup schemes related to "+session['industry']
+    ques4 = "Venture funding for "+session['industry']+" startups in "+session['location']+" upto "+session['funding']
+    ques5 = "Seed funding for "+session['industry']+" startups in "+session['location']+" upto "+session['funding']
+    ques6 = "Platforms that provide funding for "+session['industry']+" startups in "+session['location']+" upto "+session['funding']
     ques7 = "Startup "+session['otherDetails']+" Details help"
+    ques8 = "Which organisations provide "+session['funding']+" for "+session['industry']+" related startup"
+    ques9 = "Innovative ideas for "+session['topic']+" startup."
 
-    list_of_ques = [ques1,ques2,ques3,ques4,ques5,ques6,ques7]
+    list_of_ques = [ques2,ques1,ques3,ques4,ques5,ques6,ques7,ques8,ques9]
     num_results_choices = [4,5,6,7,8,9]
     
     all_recommendations = []

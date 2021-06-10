@@ -7,24 +7,26 @@
     flex-direction: column;
     width: 215px;
     height: 300px;
-    border: 2px red solid;
     margin: 10px;
     justify-content:space-evenly;
+    background: linear-gradient(90deg, rgba(252,176,69,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+    border-radius: 15px;
 
 }
 .card-top {
     display: flex;
     flex-direction: row;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
+    /* margin-top: 0.5rem; */
+    margin-bottom: 0.5rem;
     align-items:flex-end;
-    border: 2px green solid;
+    /* border: 2px green solid; */
     justify-content: space-evenly;
 }
 .card-mid{
-    border: 2px rgb(128, 0, 85) solid;
+    /* border: 2px rgb(128, 0, 85) solid; */
     align-content: center;
     text-align: center;
+    font-family:cursive;
 }
 .card-low{
     display: flex;
