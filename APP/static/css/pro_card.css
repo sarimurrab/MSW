@@ -9,8 +9,9 @@
     height: 300px;
     margin: 10px;
     justify-content:space-evenly;
-    background: linear-gradient(90deg, rgba(252,176,69,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+    background: linear-gradient(180deg, rgba(84,194,255,1) 0%, rgba(93,255,155,1) 100%);
     border-radius: 15px;
+    margin-top: 70px;
 
 }
 .card-top {
@@ -26,7 +27,7 @@
     /* border: 2px rgb(128, 0, 85) solid; */
     align-content: center;
     text-align: center;
-    font-family:cursive;
+    font-family:sans-serif;
 }
 .card-low{
     display: flex;
@@ -66,6 +67,7 @@
     text-align: center;
     text-decoration: none;
     border-radius: 50%;
+    box-sizing: unset;
   }
   .fa:hover {
     opacity: 0.7;
@@ -96,3 +98,52 @@
 	display: flex;
 	flex-flow: wrap;
 }
+
+.navbar {
+	overflow: hidden;
+	background-color: rgb(35, 60, 71);
+	position: fixed; /* Set the navbar to fixed position */
+	top: 0; /* Position the navbar at the top of the page */
+	width: 100%; /* Full width */
+	z-index: 9999;
+	display: flex;
+	justify-content: flex-start;
+  font-size: 20px;
+  }
+  
+  /* Links inside the navbar */
+  .navbar a {
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+  }
+  
+  /* Change background on mouse-over */
+  .navbar a:hover {
+	background: #ddd;
+	color: black;
+  }
+
+  .mybtn:hover{
+    background-color: #14849a;
+  }
+
+  .mybtn{
+    text-decoration: none;
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-top: 5px;
+    padding-top: 2px;
+    background-color: #1bc9ec;
+    border-radius: 10px;
+  }
+
+  p{
+    font-family: cursive;
+    font-style: oblique;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }

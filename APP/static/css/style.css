@@ -161,3 +161,37 @@ nav ul li a{
 #card{
   border-radius: 10px;
 }
+
+.navbar {
+	overflow: hidden;
+	background-color: rgb(35, 60, 71);
+	position: fixed; /* Set the navbar to fixed position */
+	top: 0; /* Position the navbar at the top of the page */
+	width: 100%; /* Full width */
+	z-index: 9999;
+	display: flex;
+	justify-content: flex-start;
+  font-size: 1.25rem;
+  }
+  
+  /* Links inside the navbar */
+  .navbar a {
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 0.875rem 1rem;
+	text-decoration: none;
+  }
+  
+  /* Change background on mouse-over */
+  .navbar a:hover {
+	background: #ddd;
+	color: black;
+  }
+
+  @media(max-width:998px){
+    html{
+      font-size: 55%;
+    }
+  }
