@@ -20,7 +20,9 @@ from sqlalchemy_json import mutable_json_type
 
 app = Flask(__name__)
 base = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://djlxcnduwrwmfa:425706efc7122753c64944086c16d981e9230a1687edd9dbf3899950a4371a04@ec2-23-23-164-251.compute-1.amazonaws.com:5432/d91fikrbh1bka4"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:mypassword@localhost/startup1"
+
+#"postgres://djlxcnduwrwmfa:425706efc7122753c64944086c16d981e9230a1687edd9dbf3899950a4371a04@ec2-23-23-164-251.compute-1.amazonaws.com:5432/d91fikrbh1bka4"
 # "sqlite:///" + \
 #     os.path.join(base, "users.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -148,12 +150,16 @@ def index():
     #       allowed_to_coach = True
     try:
         coach = Coach.query.filter_by(id=current_user.id).first()
+        print(coach)
     except:
         coach = None
     if coach:
         allowed_to_coach = False
     else:
         allowed_to_coach = True
+
+
+
     num_of_notifications = 0
     if current_user.is_active:
         mentor_username,mentor_id = current_user.username, current_user.id
