@@ -67,8 +67,11 @@
 
           <h4>{{coach[1].position}}, {{coach[1].organization}}</h4>
           <p>{{'“'+coach[1].shortdescription+'”'}}</p>
-
+          {%if current_user.username == coach[0].username%}
+          <a class="btn mybtn mybtn2"  href="#" style="text-decoration: none;">Your Profile</a>
+          {%else%}
           <a class="btn mybtn" target="_blank" href="{{url_for('send_request',rcvd_username = coach[0].username)}}" style="text-decoration: none;">Send Request</a>
+          {%endif%}
         </div>
 
 

@@ -140,7 +140,12 @@
     background-color: #1bc9ec;
     border-radius: 10px;
   }
-
+  .mybtn2{
+    background-color: #dee4e6;
+  }
+  .mybtn2:hover{
+    background-color: #14849a;
+  }
   p{
     font-family: cursive;
     font-style: oblique;
