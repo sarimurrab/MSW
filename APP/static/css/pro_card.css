@@ -11,7 +11,7 @@
     justify-content:space-evenly;
     background: linear-gradient(180deg, rgba(84,194,255,1) 0%, rgba(93,255,155,1) 100%);
     border-radius: 15px;
-    margin-top: 70px;
+    /* margin-top: 70px; */
 
 }
 .card-top {
@@ -99,34 +99,6 @@
 	flex-flow: wrap;
 }
 
-.navbar {
-	overflow: hidden;
-	background-color: rgb(35, 60, 71);
-	position: fixed; /* Set the navbar to fixed position */
-	top: 0; /* Position the navbar at the top of the page */
-	width: 100%; /* Full width */
-	z-index: 9999;
-	display: flex;
-	justify-content: flex-start;
-  font-size: 20px;
-  }
-  
-  /* Links inside the navbar */
-  .navbar a {
-	float: left;
-	display: block;
-	color: #f2f2f2;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-  }
-  
-  /* Change background on mouse-over */
-  .navbar a:hover {
-	background: #ddd;
-	color: black;
-  }
-
   .mybtn:hover{
     background-color: #14849a;
   }
@@ -151,4 +123,15 @@
     font-style: oblique;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+  }
+
+  .right-links {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    color: white;
+  }
+  .right-links a {
+    text-transform: none;
+    color: white;
   }

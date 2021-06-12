@@ -37,16 +37,60 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
     <title>Mentors</title>
   </head>
 
   <body>
-    <div class="navbar fixed-top navbar-expand-md ">
+    <!-- <div class="navbar fixed-top navbar-expand-md ">
       <a href="{{url_for('index')}}">Home</a>
       <a href="{{url_for('services')}}">Services</a>
       <a href="{{ url_for('profile') }}" style="margin-left: auto;">Hi, {{ current_user.name }}!&Tab;</a>
       <a href="{{url_for('logout')}}" style="margin-left: 0px;">Logout</a>
+    </div> -->
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/"> HOME</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('services')}}">Services</a>
+            </li>
+          </ul>
+        </div>
+        <div class="d-flex align-items-center">
+          <ul class="right-links">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{{ url_for('profile') }}"
+                style="margin-left: 0px"
+                >Hi {{ current_user.name }}!&Tab;</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="left-region"></div>
     <div class="right-region">

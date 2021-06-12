@@ -1,71 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>startUpCoach</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" 
-          rel="stylesheet" 
-          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" 
-          crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='/css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-</head>
-
-<body>
-    <div class="navbar">
-
-        <!-- <div class="navelements"> -->
-            <a class="navbar-brand" href="/">
-                HOME
-            </a>
+  <body>
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/"> HOME</a>
+            </li>
             {% if current_user.is_authenticated %}
-            <a href="{{url_for('services')}}">Services</a>
-            <a href="#blog">Blog</a>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('services')}}">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#blog">Blog</a>
+            </li>
             {%endif%}
-            <a href="#career">Careers</a>
-            <a href="#about">About</a>
-            <!-- <div class="topnav-right"> -->
-                
-                {% if current_user.is_authenticated %}
-                <a href="{{url_for('notifications')}}" class="notification" style="margin-left: auto;">
-                    <span>&#x1F514;
-                        {%if num_of_notifications>0%}
-                        <notificaion style="color: red;">{{num_of_notifications}}</notificaion>
-                        {%endif%}
-                    </span>
-                    <!-- <span class="badge">3</span> -->
-                  </a>
-                {% if allowed_to_coach%}
-                <a href="{{url_for('becomecoach')}}" style="margin-left: 0px;">Become Coach</a>
-                {%else%}
-                <a href="#" style="margin-left: 0px;">Coach &#9812;</a>
-                {%endif%}
-                <a href="{{ url_for('profile') }}" style="margin-left: 0px;">Hi {{ current_user.name }}!&Tab;</a>
-                <a href="{{url_for('logout')}}" style="margin-left: 0px;">Logout</a>
-                {%else%}
-                <a href="{{ url_for('google_login') }}" style="margin-left: auto;">LogIn/SignUp</a> 
-                {% endif %}
-            <!-- </div> -->
-        <!-- </div> -->
-    </div>
-    <section id="banner" style="background : linear-gradient(rgba(0,0,0,0.5),#009688), url('{{ url_for('static',filename='images/bgimg.jpg') }}'); background-size : cover; background-position : center; height : 100vh;">
-        <div class="banner-text">
-            <h1>startUp Coach</h1>
-            <p>“Mentoring is a brain to pick, an ear to listen, and a push in the right direction.”</p>
-            <div class="banner-btn">
-                {% if current_user.is_authenticated ==False%}
-                <a href="{{ url_for('google_login') }}"><span></span> Find a Mentor</a>
-                {%else%}
-                <a href="{{url_for('list_of_coach')}}"><span></span> Mentors</a>
-                {%endif%}
-            </div>
-
+            <li class="nav-item">
+              <a class="nav-link" href="#career">Careers</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+          </ul>
         </div>
+        <div class="d-flex align-items-center">
+          <ul class="right-links">
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{{url_for('notifications')}}"
+                class="notification"
+              >
+                <span
+                  >&#x1F514; {%if num_of_notifications>0%}
+                  <notificaion style="color: red"
+                    >{{num_of_notifications}}</notificaion
+                  >
+                  {%endif%}
+                </span></a
+              >
+            </li>
+            {% if allowed_to_coach%}
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{{url_for('becomecoach')}}"
+                style="margin-left: 0px"
+                >Become Coach</a
+              >
+            </li>
+            {%else%}
+            <li class="nav-item">
+              <a class="nav-link" href="#">Coach &#9812;</a>
+            </li>
+            {%endif%}
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{{ url_for('profile') }}"
+                style="margin-left: 0px"
+                >Hi {{ current_user.name }}!&Tab;</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+            </li>
+            {%else%}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('google_login') }}"
+                >LogIn/SignUp</a
+              >
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      <!-- <div class="navelements"> -->
+      <!-- <a href="/"> HOME </a>
+      {% if current_user.is_authenticated %}
+      <a href="{{url_for('services')}}">Services</a>
+      <a href="#blog">Blog</a>
+      {%endif%}
+      <a href="#career">Careers</a>
+      <a href="#about">About</a> -->
+
+      <!-- <div class="topnav-right"> -->
+
+      <!-- </div> -->
+      <!-- </div> -->
+    </div>
+
+    <section
+      id="banner"
+      style="background : linear-gradient(rgba(0,0,0,0.5),#009688), url('{{ url_for('static',filename='images/bgimg.jpg') }}'); background-size : cover; background-position : center; height : 100vh;"
+    >
+      <div class="banner-text">
+        <h1>startUp Coach</h1>
+        <p>
+          “Mentoring is a brain to pick, an ear to listen, and a push in the
+          right direction.”
+        </p>
+        <div class="banner-btn">
+          {% if current_user.is_authenticated ==False%}
+          <a href="{{ url_for('google_login') }}"
+            ><span></span> Find a Mentor</a
+          >
+          {%else%}
+          <a href="{{url_for('list_of_coach')}}"><span></span> Mentors</a>
+          {%endif%}
+        </div>
+      </div>
     </section>
 
     <!-- <div id= "sideNav"> 
@@ -99,23 +183,19 @@
         }
     </script> -->
 
-
-
-
-
     <section id="about">
-        <div class="title-text">
-            <h1>Why Chose Us?</h1>
-            <p>
-                Startup Coach is a free, open-source platform which aims to connect software developers and mentors all over the world. It is built by a group of talented and passionate developers, designers, engineers, and humans who want to make the engineering world a better place to collaborate. This project was born out of a desire to provide a platform to connect mentors and mentees throughout the world at no cost. Coding Coach is created by the people, for the people.
-            </p>
-
-        </div>
-         
+      <div class="title-text">
+        <h1>Why Chose Us?</h1>
+        <p>
+          Startup Coach is a free, open-source platform which aims to connect
+          software developers and mentors all over the world. It is built by a
+          group of talented and passionate developers, designers, engineers, and
+          humans who want to make the engineering world a better place to
+          collaborate. This project was born out of a desire to provide a
+          platform to connect mentors and mentees throughout the world at no
+          cost. Coding Coach is created by the people, for the people.
+        </p>
+      </div>
     </section>
-
-
-
-</body>
-
+  </body>
 </html>
