@@ -71,7 +71,7 @@
   .btn, .btn:link, .btn:visited {
     text-transform: uppercase;
     text-decoration: none;
-    padding: 1.5rem 4rem;
+    padding: 1rem 3rem;
     display: inline-block;
     border-radius: 0.5rem;
     -webkit-transition: all 0.2s;
@@ -305,6 +305,18 @@
     /* font-weight: 100; */
   }
   
+  .card_info{
+    text-align: center;
+    /* color: #fff; */
+    font-size: 1.7rem;
+    text-transform: uppercase;
+    font-style: italic;
+  }
+  .card_info_detail{
+    text-align: center;
+    /* color: #fff; */
+    font-size: 1.5rem;
+  }
   .row {
     max-width: 114rem;
     margin: 0 auto;

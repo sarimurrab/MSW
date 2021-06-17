@@ -76,9 +76,12 @@
                   <p class="card__price-only">Get</p>
                   <p class="card__price-value">Recommendation</p>
                 </div>
-                <a href="{{url_for('system_recommend')}}" class="btn btn--white">Through Questionaire</a>
-        
-                <a href="{{url_for('proposal')}}" class="btn btn--white" style="margin-top: 5px;">Through Proposal</a>
+                <p class="card_info">Via Questionaire</p>
+                <p class="card_info_detail">(Recommendation based on questions provided.)</p>
+                <a href="{{url_for('system_recommend')}}" class="btn btn--white" style="margin-top: 0.32rem;">Enter</a>
+                <p class="card_info" style="margin-top: 0.63;">Via Proposal</p>
+                <p class="card_info_detail">(Recommendation based on proposal provided.)</p>
+                <a href="{{url_for('proposal')}}" class="btn btn--white" style="margin-top: 0.32rem;">Enter</a>
               </div>
               
             </div>
