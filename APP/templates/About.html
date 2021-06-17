@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About-startUpCoach</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='/css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/"> HOME</a>
+            </li>
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('services')}}">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#blog">Blog</a>
+            </li>
+            {%endif%}
+            <li class="nav-item">
+              <a class="nav-link" href="#career">Careers</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+          </ul>
+        </div>
+        <div class="d-flex align-items-center">
+          <ul class="right-links">
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{{ url_for('profile') }}"
+                style="margin-left: 0px"
+                >Hi {{ current_user.name }}!&Tab;</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+            </li>
+            {%else%}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('google_login') }}"
+                >LogIn/SignUp</a
+              >
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+<section id="about" style="background : url('{{ url_for('static',filename='images/choose.jpg') }}');background-size : cover; background-position : center; height : 100vh;">
+    <div class="title-text">
+      <h1>Why Chose Us?</h1>
+      <p>
+        Startup Coach is a free, open-source platform which aims to connect
+        software developers and mentors all over the world. It is built by a
+        group of talented and passionate developers, designers, engineers, and
+        humans who want to make the engineering world a better place to
+        collaborate. This project was born out of a desire to provide a
+        platform to connect mentors and mentees throughout the world at no
+        cost. Coding Coach is created by the people, for the people.
+      </p>
+    </div>
+  </section>
+</body>
+</html>
