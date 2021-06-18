@@ -20,7 +20,7 @@ from sqlalchemy_json import mutable_json_type
 
 app = Flask(__name__)
 base = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:password@localhost/zeeshaandb"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:mypassword@localhost/startup1"
 
 #"postgres://djlxcnduwrwmfa:425706efc7122753c64944086c16d981e9230a1687edd9dbf3899950a4371a04@ec2-23-23-164-251.compute-1.amazonaws.com:5432/d91fikrbh1bka4"
 # "sqlite:///" + \
@@ -289,6 +289,8 @@ def about():
 
 @app.route('/proposal', methods=['POST','GET'])
 def proposal():
+    if request.method == 'POST':
+        pass
     return render_template('NLP.html')
 
 @app.route('/system-recommendation', methods=['POST','GET'])
