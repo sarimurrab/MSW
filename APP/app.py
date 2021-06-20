@@ -15,6 +15,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.ext.mutable import Mutable
 from sqlalchemy_json import mutable_json_type
+from utils.entity_recog import entity_recognition
 
 
 
@@ -290,7 +291,14 @@ def about():
 @app.route('/proposal', methods=['POST','GET'])
 def proposal():
     if request.method == 'POST':
-        pass
+        ques1 = entity_recognition(request.form['otherDetails'])+" "+"startup goverment schemes"
+        list_of_ques = [ques1]
+
+        all_recommendations = []
+        for ques in list_of_ques:
+            for i in search(ques,num_results=30):
+                all_recommendations.append(i)  
+        return render_template('sys_recommendation_after.html',all_recommendations=all_recommendations)
     return render_template('NLP.html')
 
 @app.route('/system-recommendation', methods=['POST','GET'])
@@ -367,8 +375,16 @@ def send_request(rcvd_username):
 def notifications():
     mentor_username,mentor_id = current_user.username, current_user.id
     list_of_requests = Requests.query.filter_by(id=mentor_id).first().requests[mentor_username]
+
+    num_of_notifications = 0
+    if current_user.is_active:
+        mentor_username,mentor_id = current_user.username, current_user.id
+        list_of_requests = Requests.query.filter_by(id=mentor_id).first().requests[mentor_username]
+        for i in list_of_requests:
+            if list_of_requests[i]=='req_came':
+                num_of_notifications+=1
     
-    return render_template('req_notifications.html', list_of_requests = list_of_requests)
+    return render_template('req_notifications.html', list_of_requests = list_of_requests, num_of_notifications=num_of_notifications)
 
 @app.route('/reqserve_accept/<mentees_username>')
 @login_required

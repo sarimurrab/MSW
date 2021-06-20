@@ -105,7 +105,13 @@
         <a href="{{url_for('logout')}}" style="margin-left: 0px;">Logout</a>
       </div>
 
+      
         <table class="group">
+          <tr>
+            
+            <td>You have {{num_of_notifications}} notifications.</td>
+          </tr>
+          
             {%for req in list_of_requests%}
 
             {%if list_of_requests[req]== "req_came"%}

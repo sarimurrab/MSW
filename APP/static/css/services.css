@@ -297,7 +297,7 @@
   
   .card__price-only {
     font-size: 3rem;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
   }
   
   .card__price-value {
@@ -307,8 +307,8 @@
   
   .card_info{
     text-align: center;
-    /* color: #fff; */
-    font-size: 1.7rem;
+    color: white;
+    font-size: 2rem;
     text-transform: uppercase;
     font-style: italic;
   }
@@ -320,6 +320,8 @@
   .row {
     max-width: 114rem;
     margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
   }
   
   .row:not(:last-child) {
